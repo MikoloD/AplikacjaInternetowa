@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace MapApp.Controllers
 {
-    public class HomeController : Controller
+    public class IssueController : Controller
     {
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
         [HttpGet]
         public IActionResult Issue()
         {

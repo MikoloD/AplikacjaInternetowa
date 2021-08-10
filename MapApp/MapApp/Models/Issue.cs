@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace MapApp.Model
+namespace MapApp.Models
 {
     public class Issue : DbContext
     {

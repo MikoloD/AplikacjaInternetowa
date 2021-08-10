@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MapApp.Model
+namespace MapApp.Models
 {
     public class Context : DbContext
     {
