@@ -7,17 +7,15 @@
 <div id="map"></div>
 <div class="text-center">
     <script>
-        var map = L.map('map').setView([49.771944, 19.294444], 12);
+        var map = L.map('map').setView([49.821944, 19.044444], 12);
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            tileSize: 512,
-            zoomOffset: -1
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
 /*        map.locate({ setView: true, maxZoom: 16 });*/
 
-        L.marker([49.82, 19.04]).addTo(map)
+        L.marker([49.821944, 19.044444]).addTo(map)
             .bindPopup('Bielsko-Biała')
             .openPopup();
     </script>
