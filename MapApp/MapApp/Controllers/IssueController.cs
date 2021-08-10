@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MapApp.Model;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,13 @@ namespace MapApp.Controllers
 {
     public class IssueController : Controller
     {
-
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult AddIssue()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddIssue(Issue issue)
         {
             return View();
         }
