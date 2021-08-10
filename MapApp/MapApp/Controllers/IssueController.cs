@@ -8,6 +8,7 @@ namespace MapApp.Controllers
 {
     public class IssueController : Controller
     {
+
         public IActionResult Index()
         {
             return View();
