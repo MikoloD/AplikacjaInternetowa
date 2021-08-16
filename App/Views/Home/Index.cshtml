@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="map" style="width: 100%;height: calc(100vh - 55px);position: relative;overflow: hidden;"></div>
+<script>
+    var map = L.map('map').setView([49.821944, 19.044444], 11);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([49.821944, 19.044444]).addTo(map)
+        .bindPopup('Bielsko-Biała')
+        .openPopup();
+</script>
+
