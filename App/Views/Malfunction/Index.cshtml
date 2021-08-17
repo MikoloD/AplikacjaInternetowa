@@ -1,18 +1,64 @@
-﻿@model List<App.Models.IssueModel>
+﻿@model App.Models.MalfunctionModel
 @{
     ViewData["Title"] = "Home Page";
-}
+    var Issues = ViewBag.Issues;
+    var Malfunctions = ViewBag.Malfunctions;
+    var selectedValue = 0;
+    SelectList IssueList = new SelectList(Issues, "IssueId", "IssueId", selectedValue);
+    SelectList MalfunctionList = new SelectList(Malfunctions, "MalfunctionId", "MalfunctionName");
 
-<div id="map" style="width: 100%;height: calc(100vh - 55px);position: relative;overflow: hidden;"></div>
+}
+<div class="row mx-1">
+    <div class="col-sm" id="map" style="width: 100%;height: calc(100vh - 55px);position: relative;overflow: hidden;">
+    </div>
+    <div class="col-sm">
+        <div class="form-inline my-3">
+            <label asp-for="Issues.First().IssueId" class="control-label mr-5 ml-2 my-3"></label>
+            <select asp-items="@(IssueList)"
+                    class="form-control">
+                <option value="wybierz">---Wybierz---</option>
+            </select>
+        </div>            
+        @*@{var Issue = Issues.First(x => x.Id == selectedValue);}
+        <div class="container">
+
+            <div class="form-control">@item.Description</div>
+            //image//
+        </div>*@
+    </div>
+    <div>
+        <form asp-action="AddMalfunction">
+            <div class="form-inline my-3">
+                <label asp-for="MalfunctionName" class="control-label mr-5 ml-2 my-3"></label>
+                <select asp-items="@(MalfunctionList)"
+                        class="form-control" asp-for="MalfunctionId">
+                    <option value="wybierz">---Wybierz---</option>
+                </select>
+            </div>
+
+            @*@if (@ViewBag.Warning != "")
+                {
+                    <div class="alert alert-danger font-weight-bolder">@ViewBag.Warning</div>
+                }*@
+            <div class="form-group align-items-center">
+                <input type="submit" value="Dodaj" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
 <script>
 
+    var id = [];
     var lat = [];
     var lon = [];
+    var date = [];
     var desc = [];
-    @foreach (var item in Model)
+    @foreach (var item in ViewBag.Issues)
     {
+        @:id.push("@item.IssueId");
         @:lat.push("@item.Latitude");
         @:lon.push("@item.Longitude");
+        @:date.push("@item.Date");
         @:desc.push("@item.Description");
     }
 
@@ -23,8 +69,7 @@
     }).addTo(map);
 
     for (var i = 0; i < lat.length; i++) {
-            L.marker([lat[i], lon[i]]).addTo(map)
-                .bindPopup(desc[i])
-                .openPopup();
+        L.marker([lat[i], lon[i]]).addTo(map)
+            .bindPopup("Zgłoszenie nr " + id[i] + "<br>" + desc[i]);
     }
 </script>

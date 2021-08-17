@@ -9,8 +9,10 @@ namespace App.Models
     public class IssueModel
     {
         [Key]
+        [Display(Name = "Zgłoszenie nr")]
         public int IssueId { get; set; }
         public int? MalfunctionId { get; set; }
+        [Display(Name = "Opis")]
         public string Description { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

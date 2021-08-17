@@ -1,5 +1,7 @@
 ﻿using App.Data;
+using App.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +16,20 @@ namespace App.Controllers
         {
             _context = context;
         }
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(_context.Issues.ToList());
+            var querry = _context.Issues
+                .Where(x => x.Malfunction.State != State.Finished);
+            ViewBag.Issues = querry;
+            ViewBag.Malfunctions = _context.Malfunctions
+                .Where(x => x.State != State.Finished);
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddMalfunction(MalfunctionModel malfunction,IssueModel issue)
+        {
+            return View(nameof(Index));
         }
     }
 }

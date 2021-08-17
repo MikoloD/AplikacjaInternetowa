@@ -16,6 +16,8 @@ namespace App.Models
     {
         [Key]
         public int MalfunctionId { get; set; }
+        [Display(Name = "Nazwa awarii")]
+        public string MalfunctionName { get; set; }
         public State State { get; set; }
         public virtual List<IssueModel> Issues{ get; set; }
     }
