@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Controllers
 {
@@ -18,7 +19,7 @@ namespace App.Controllers
         [HttpGet]
         public IActionResult Issue()
         {
-            return View();
+            return View(new IssueModel());
         }
         [HttpPost]
         public IActionResult AddIssue(IssueModel issue)

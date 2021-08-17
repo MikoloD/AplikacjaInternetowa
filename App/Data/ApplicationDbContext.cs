@@ -21,7 +21,7 @@ namespace App.Data
             builder.Entity<IssueModel>()
                 .HasMany(x => x.Images)
                 .WithOne(x => x.Issue)
-                .HasForeignKey(x => x.MultimediumId);
+                .HasForeignKey(x => x.IssueId);
         }
     }
 }

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace App.Data.Migrations
+namespace App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210816131527_up4")]
-    partial class up4
+    [Migration("20210817111615_Init1")]
+    partial class Init1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,11 +31,11 @@ namespace App.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Latitude")
-                        .HasColumnType("real");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
 
-                    b.Property<float>("Longitude")
-                        .HasColumnType("real");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
 
                     b.HasKey("IssueId");
 
@@ -45,12 +45,19 @@ namespace App.Data.Migrations
             modelBuilder.Entity("App.Models.Multimedium", b =>
                 {
                     b.Property<int>("MultimediumId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
                     b.HasKey("MultimediumId");
+
+                    b.HasIndex("IssueId");
 
                     b.ToTable("Multimedia");
                 });
@@ -259,7 +266,7 @@ namespace App.Data.Migrations
                 {
                     b.HasOne("App.Models.IssueModel", "Issue")
                         .WithMany("Images")
-                        .HasForeignKey("MultimediumId")
+                        .HasForeignKey("IssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

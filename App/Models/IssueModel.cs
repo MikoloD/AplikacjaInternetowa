@@ -13,6 +13,6 @@ namespace App.Models
         public string Description { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public virtual IEnumerable<Multimedium> Images { get; set; }
+        public virtual List<Multimedium> Images { get; set; }
     }
 }

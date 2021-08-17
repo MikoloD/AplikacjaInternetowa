@@ -12,10 +12,11 @@ namespace App.Models
     {
         [Key]
         public int MultimediumId { get; set; }
+        public int IssueId { get; set; }
         public byte[] Image { get; set; }
         public virtual IssueModel Issue { get; set; }
 
-        public byte[] ImageToByteArray(Image imageIn)
+        public static byte[] ImageToByteArray(Image imageIn)
         {
             using (var ms = new MemoryStream())
             {
@@ -25,7 +26,7 @@ namespace App.Models
             }
         }
 
-        public Image ByteArrayToImage(byte[] byteArrayIn)
+        public static Image ByteArrayToImage(byte[] byteArrayIn)
         {
             using (var ms = new MemoryStream(byteArrayIn))
             {
