@@ -1,4 +1,4 @@
-﻿@model List<App.Models.MalfunctionModel>
+﻿@model List<App.Models.IssueModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -11,9 +11,9 @@
     var desc = [];
     @foreach (var item in Model)
     {
-        @:lat.push("@item.Issues.First().Latitude");
-        @:lon.push("@item.Issues.First().Longitude");
-        @:desc.push("@item.Issues.First().Description");
+        @:lat.push("@item.Latitude");
+        @:lon.push("@item.Longitude");
+        @:desc.push("@item.Description");
     }
 
     var map = L.map('map').setView([49.821944, 19.044444], 11);

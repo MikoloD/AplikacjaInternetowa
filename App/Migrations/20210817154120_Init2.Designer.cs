@@ -4,14 +4,16 @@ using App.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210817154120_Init2")]
+    partial class Init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,9 +28,6 @@ namespace App.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -38,8 +37,11 @@ namespace App.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<int?>("MalfunctionId")
+                    b.Property<int>("MalfunctionId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("IssueId");
 
@@ -60,7 +62,7 @@ namespace App.Migrations
 
                     b.HasKey("MalfunctionId");
 
-                    b.ToTable("Malfunctions");
+                    b.ToTable("MalfunctionModel");
                 });
 
             modelBuilder.Entity("App.Models.Multimedium", b =>
@@ -287,7 +289,9 @@ namespace App.Migrations
                 {
                     b.HasOne("App.Models.MalfunctionModel", "Malfunction")
                         .WithMany("Issues")
-                        .HasForeignKey("MalfunctionId");
+                        .HasForeignKey("MalfunctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("App.Models.Multimedium", b =>

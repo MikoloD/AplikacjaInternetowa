@@ -11,6 +11,7 @@ namespace App.Data
     {
         public DbSet<Multimedium> Multimedia { get; set; }
         public DbSet<IssueModel> Issues { get; set; }
+        public DbSet<MalfunctionModel> Malfunctions { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -22,6 +23,10 @@ namespace App.Data
                 .HasMany(x => x.Images)
                 .WithOne(x => x.Issue)
                 .HasForeignKey(x => x.IssueId);
+            builder.Entity<MalfunctionModel>()
+                .HasMany(x => x.Issues)
+                .WithOne(x => x.Malfunction)
+                .HasForeignKey(x => x.MalfunctionId);
         }
     }
 }

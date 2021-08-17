@@ -11,7 +11,7 @@ namespace App.Controllers
 {
     public class IssueController : Controller
     {
-        private ApplicationDbContext _context { get; set; }
+        private readonly ApplicationDbContext _context;
         public IssueController(ApplicationDbContext context)
         {
             _context = context;
@@ -24,6 +24,7 @@ namespace App.Controllers
         [HttpPost]
         public IActionResult AddIssue(IssueModel issue)
         {
+            issue.Date = DateTime.Now;
             _context.Issues.Add(issue);
             _context.SaveChanges();
             return RedirectToAction("Index","Home");

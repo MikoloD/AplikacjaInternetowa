@@ -71,11 +71,7 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 /*input*/
-img {
-    max-width: 180px;
-}
-
-input[type=file] {
-    padding: 10px;
-    background: #2d2d2d;
+.imgInput {
+    width: 100px;
+    height: 100px;
 }
