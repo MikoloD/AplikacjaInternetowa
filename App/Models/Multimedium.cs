@@ -16,24 +16,24 @@ namespace App.Models
         public byte[] Image { get; set; }
         public virtual IssueModel Issue { get; set; }
 
-        public static byte[] ImageToByteArray(Image imageIn)
-        {
-            using (var ms = new MemoryStream())
-            {
-                imageIn.Save(ms, ImageFormat.Gif);
+        //public static byte[] ImageToByteArray(Image imageIn)
+        //{
+        //    using (var ms = new MemoryStream())
+        //    {
+        //        imageIn.Save(ms, ImageFormat.Gif);
 
-                return ms.ToArray();
-            }
-        }
+        //        return ms.ToArray();
+        //    }
+        //}
 
-        public static Image ByteArrayToImage(byte[] byteArrayIn)
-        {
-            using (var ms = new MemoryStream(byteArrayIn))
-            {
-                var returnImage = System.Drawing.Image.FromStream(ms);
+        //public static Image ByteArrayToImage(byte[] byteArrayIn)
+        //{
+        //    using (var ms = new MemoryStream(byteArrayIn))
+        //    {
+        //        var returnImage = System.Drawing.Image.FromStream(ms);
 
-                return returnImage;
-            }
-        }
+        //        return returnImage;
+        //    }
+        //}
     }
 }
