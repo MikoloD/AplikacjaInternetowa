@@ -22,9 +22,10 @@ namespace App.Controllers
             var querry = _context.Issues
                 .Where(x => x.State == State.Reported)
                 .OrderByDescending(x=>x.Date);
-            ViewBag.Issues = querry ;
+            ViewBag.Issues = querry;
             ViewBag.Malfunctions = _context.Malfunctions
                 .Include(x => x.Issues);
+            
             return View();
         }
         [HttpPost]

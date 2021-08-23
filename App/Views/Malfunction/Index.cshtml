@@ -13,19 +13,33 @@
     </div>
     <div class="row mx-5">
         <div class="form-control my-3">
-            <label asp-for="Issues.First().IssueId" class="control-label mr-5 ml-2 mx-3"></label>
-            <select asp-items="@(IssueList)"
-                    class="form-control">
+            <label asp-for="Issues.First().IssueId" class="control-label mx-3 my-2"></label>
+            <select id="issueList" asp-items="@(IssueList)"
+                    class="form-control" onchange="listRelaod()">
                 <option value="wybierz">---Wybierz---</option>
             </select>
         </div>
-        <div class="form-control my-3">
-            <label asp-for="MalfunctionId" class="control-label mr-5 ml-2 mx-3"></label>
+        @*<div>
+            <div class="col-sm">
+                @Html.DisplayNameForDisplayNameFor(Issues.)
+            </div>
+            <div class="col-sm">
+                @Html.DisplayNameFor(model => model.CharacterRole)
+            </div>
+            <div class="col-sm">
+                @Html.DisplayNameFor(model => model.Trait)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-secondary" />
+            </div>
+        </div>*@
+        @*<div class="form-control my-3">
+            <label asp-for="MalfunctionId" class="control-label mx-3"></label>
             <select asp-items="@(MalfunctionList)"
                     class="form-control">
                 <option value="wybierz">---Wybierz---</option>
             </select>
-        </div>
+        </div>*@
         @*@{var Issue = Issues.First(x => x.Id == selectedValue);}
         <div class="container">
 
@@ -36,6 +50,11 @@
 
 </div>
 <script>
+
+    function listRelaod() {
+        var selects = document.getElementById("issueList");
+        return selects.options[selects.selectedIndex].value;
+    }
 
     var id = [];
     var lat = [];
@@ -65,6 +84,13 @@
     }).addTo(map);
 
     var popups = [];
+    var markers = [
+        id,
+        lat,
+        lon,
+        date,
+        desc
+    ];
     for (var i = 0; i < lat.length; i++) {
         var popup = L.popup().setContent("Zgłoszenie nr " + id[i] + "<br>" + desc[i]);
         popups.push(popup);

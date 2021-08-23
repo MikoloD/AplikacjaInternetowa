@@ -29,7 +29,7 @@
                 </a>
                 <input class="btn btn-primary" type="file" id="TakePhoto1" name="postedFile[]" data-preview="Photo1" accept="image/*"
                        onchange="ResizePhotos(0,'Photo1')" style="display:none;" />
-                <textarea id="blob0" type="hidden"  asp-for="Images[0].Img" class="form-control"></textarea>
+                <input id="blob0" type="hidden"  asp-for="Images[0].Img" class="form-control" />
                 <!-- Photo2 -->
                 <a href="#" id="TakePhoto2LinkShow" class="btn btn-secondary" onclick="$('#TakePhoto2').click();" style="width: 72px;height: 72px;display:none;padding: 0 0;">
                     <canvas id="Photo2" style="width: 100%;height: 100%;border-radius: .25rem;"></canvas>
@@ -39,7 +39,7 @@
                 </a>
                 <input class="btn btn-primary" type="file" id="TakePhoto2" name="postedFile[]" data-preview="Photo2" accept="image/*"
                        onchange="ResizePhotos(1,'Photo2')" style="display:none;" />
-                <textarea id="blob1" type="hidden" asp-for="Images[1].Img" class="form-control"></textarea>
+                <input id="blob1" type="hidden" asp-for="Images[1].Img" class="form-control" />
                 <!-- Photo3 -->
                 <a href="#" id="TakePhoto3LinkShow" class="btn btn-secondary" onclick="$('#TakePhoto3').click();" style="width: 72px;height: 72px;display:none;padding: 0 0;">
                     <canvas id="Photo3" style="width: 100%;height: 100%;border-radius: .25rem;"></canvas>
@@ -49,7 +49,7 @@
                 </a>
                 <input class="btn btn-primary" type="file" id="TakePhoto3" name="postedFile[]" data-preview="Photo3" accept="image/*"
                        onchange="ResizePhotos(2,'Photo3')" style="display:none;" />
-                <textarea id="blob2" type="hidden" asp-for="Images[2].Img" class="form-control"></textarea>
+                <input id="blob2" type="hidden" asp-for="Images[2].Img" class="form-control" />
                 <div class="form-group my-3 text-center">
                     <input type="submit" value="Zgłoś" class="btn btn-primary" asp-action="AddIssue" />
                 </div>
@@ -83,7 +83,6 @@
         blobs[2] = null;
         
         window.ResizePhotos = function (imgno, url) {
-            alert("wykonuje sie");
             // Read in file
             var file = event.target.files[0];
             prevcavas = event.target.getAttribute('data-preview');
