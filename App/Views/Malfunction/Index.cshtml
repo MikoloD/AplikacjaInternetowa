@@ -84,13 +84,13 @@
     }).addTo(map);
 
     var popups = [];
-    var markers = [
-        id,
-        lat,
-        lon,
-        date,
-        desc
-    ];
+    //var markers = [
+    //    id,
+    //    lat,
+    //    lon,
+    //    date,
+    //    desc
+    //];
     for (var i = 0; i < lat.length; i++) {
         var popup = L.popup().setContent("Zgłoszenie nr " + id[i] + "<br>" + desc[i]);
         popups.push(popup);
