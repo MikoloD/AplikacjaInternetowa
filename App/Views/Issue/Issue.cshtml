@@ -19,10 +19,37 @@
                 <div class="form-group">
                     <input id="lon" type="hidden" asp-for="Longitude" class="form-control" />
                 </div>
-                @for (int i = 0; i < 3; i++)
-                {
-                    <input type="file" asp-for="Images[i].Image" class="form-control my-3" onchange="uploadPhotos(this.value)"/>              
-                }
+                <label class="tasklabel" for="fotos" style="width:100%;">Zrób zdjęcia (max. 3) </label>
+                <!-- Photo1 -->
+                <a href="#" id="TakePhoto1LinkShow" class="btn btn-secondary" onclick="$('#TakePhoto1').click();" style="width: 72px;height: 72px;display:none;padding: 0 0;">
+                    <canvas id="Photo1" style="width: 100%;height: 100%;border-radius: .25rem;"></canvas>
+                </a>
+                <a href="#" id="TakePhoto1Link" class="btn btn-secondary" onclick="$('#TakePhoto1').click();" style="width: 72px;height: 72px;">
+                    <i class="fas fa-camera" style="font-size: 24px;position: relative;top: 33%;"></i>
+                </a>
+                <input class="btn btn-primary" type="file" id="TakePhoto1" name="postedFile[]" data-preview="Photo1" accept="image/*"
+                       onchange="ResizePhotos(0,'Photo1')" style="display:none;" />
+                <img id="blob0" type="hidden" asp-for="Images[0].Img" class="form-control"/>
+                <!-- Photo2 -->
+                <a href="#" id="TakePhoto2LinkShow" class="btn btn-secondary" onclick="$('#TakePhoto2').click();" style="width: 72px;height: 72px;display:none;padding: 0 0;">
+                    <canvas id="Photo2" style="width: 100%;height: 100%;border-radius: .25rem;"></canvas>
+                </a>
+                <a href="#" id="TakePhoto2Link" class="btn btn-secondary" onclick="$('#TakePhoto2').click();" style="width: 72px;height: 72px;">
+                    <i class="fas fa-camera" style="font-size: 24px;position: relative;top: 33%;"></i>
+                </a>
+                <input class="btn btn-primary" type="file" id="TakePhoto2" name="postedFile[]" data-preview="Photo2" accept="image/*"
+                       onchange="ResizePhotos(1,'Photo2')" style="display:none;" />
+                <img id="blob1" type="hidden" asp-for="Images[1].Img" class="form-control" />
+                <!-- Photo3 -->
+                <a href="#" id="TakePhoto3LinkShow" class="btn btn-secondary" onclick="$('#TakePhoto3').click();" style="width: 72px;height: 72px;display:none;padding: 0 0;">
+                    <canvas id="Photo3" style="width: 100%;height: 100%;border-radius: .25rem;"></canvas>
+                </a>
+                <a href="#" id="TakePhoto3Link" class="btn btn-secondary" onclick="$('#TakePhoto3').click();" style="width: 72px;height: 72px;">
+                    <i class="fas fa-camera" style="font-size: 24px;position: relative;top: 33%;"></i>
+                </a>
+                <input class="btn btn-primary" type="file" id="TakePhoto3" name="postedFile[]" data-preview="Photo3" accept="image/*"
+                       onchange="ResizePhotos(2,'Photo3')" style="display:none;" />
+                <img id="blob2" type="hidden" asp-for="Images[2].Img" class="form-control" />
                 <div class="form-group my-3 text-center">
                     <input type="submit" value="Zgłoś" class="btn btn-primary" asp-action="AddIssue" />
                 </div>
@@ -44,7 +71,7 @@
         function showPosition(position) {
             document.getElementById("lat").value = parseFloat(position.coords.latitude);
             document.getElementById("lon").value = parseFloat(position.coords.longitude);
-        }   
+        }
         $(window).on('load', function () {
             getLocation();
         })
@@ -54,7 +81,9 @@
         blobs[0] = null;
         blobs[1] = null;
         blobs[2] = null;
+        
         window.ResizePhotos = function (imgno, url) {
+            alert("wykonuje sie");
             // Read in file
             var file = event.target.files[0];
             prevcavas = event.target.getAttribute('data-preview');
@@ -90,6 +119,9 @@
                         canvas.height = height;
                         canvas.getContext('2d').drawImage(image, 0, 0, width, height);
                         var dataUrl = canvas.toDataURL('image/jpeg', 0.30); // poziom kompresji
+
+                        document.getElementById("blob" + imgno).value = dataUrl;
+
                         var resizedImage = dataURLToBlob(dataUrl);
 
 
@@ -136,7 +168,6 @@
             for (var i = 0; i < rawLength; ++i) {
                 uInt8Array[i] = raw.charCodeAt(i);
             }
-
             return new Blob([uInt8Array], { type: contentType });
         }
         /* End Utility function to convert a canvas to a BLOB      */
@@ -144,6 +175,10 @@
         /* Handle image resized events */
         $(document).on("imageResized", function (event) {
             blobs[event.imgnr] = event.blob;
+
+            document.getElementById("blob" + event.imgnr).value = blobs[event.imgnr];
+
+            /*JSON.stringify(blobs[event.imgnr])*/
         })
     </script>
 

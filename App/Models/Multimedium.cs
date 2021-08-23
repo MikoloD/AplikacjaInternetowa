@@ -14,26 +14,8 @@ namespace App.Models
         public int MultimediumId { get; set; }
         public int IssueId { get; set; }
         public byte[] Image { get; set; }
+        public string Img { get; set; }
         public virtual IssueModel Issue { get; set; }
 
-        //public static byte[] ImageToByteArray(Image imageIn)
-        //{
-        //    using (var ms = new MemoryStream())
-        //    {
-        //        imageIn.Save(ms, ImageFormat.Gif);
-
-        //        return ms.ToArray();
-        //    }
-        //}
-
-        //public static Image ByteArrayToImage(byte[] byteArrayIn)
-        //{
-        //    using (var ms = new MemoryStream(byteArrayIn))
-        //    {
-        //        var returnImage = System.Drawing.Image.FromStream(ms);
-
-        //        return returnImage;
-        //    }
-        //}
     }
 }
