@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace App.Models
 {
+    public enum State
+    {
+        Reported,
+        InProgress,
+        Finished
+    }
     public class IssueModel
     {
         [Key]
@@ -17,6 +23,7 @@ namespace App.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public DateTime Date { get; set; }
+        public State State { get; set; }
         public virtual List<Multimedium> Images { get; set; }
         public virtual MalfunctionModel Malfunction { get; set; }
     }

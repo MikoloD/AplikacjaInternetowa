@@ -20,10 +20,11 @@ namespace App.Controllers
         public IActionResult Index()
         {
             var querry = _context.Issues
-                .Where(x => x.Malfunction.State != State.Finished);
-            ViewBag.Issues = querry;
+                .Where(x => x.State == State.Reported)
+                .OrderByDescending(x=>x.Date);
+            ViewBag.Issues = querry ;
             ViewBag.Malfunctions = _context.Malfunctions
-                .Where(x => x.State != State.Finished);
+                .Include(x => x.Issues);
             return View();
         }
         [HttpPost]
