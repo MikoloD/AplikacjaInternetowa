@@ -25,13 +25,38 @@ namespace App.Controllers
             ViewBag.Issues = querry;
             ViewBag.Malfunctions = _context.Malfunctions
                 .Include(x => x.Issues);
-            
+            return View();
+        }
+        [HttpGet]
+        public IActionResult AddMalfunction(IssueModel issue)
+        {
             return View();
         }
         [HttpPost]
         public IActionResult AddMalfunction(MalfunctionModel malfunction,IssueModel issue)
         {
-            return View(nameof(Index));
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Photos(int id)
+        {
+            int check = _context.Issues
+                .Where(x => x.IssueId == id)
+                .Select(x => x.Images)
+                .ToList()
+                .Count();
+            if (check > 0)
+            {
+                IssueModel issuePhotos = _context.Issues
+                .Include(x => x.Images)
+                .First(x => x.IssueId == id);
+
+                foreach (var item in issuePhotos.Images)
+                {
+                    //TODO blob to image
+                }
+            }
+            return View();
         }
     }
 }

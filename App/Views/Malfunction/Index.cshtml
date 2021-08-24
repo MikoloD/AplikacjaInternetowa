@@ -5,7 +5,7 @@
     var Malfunctions = ViewBag.Malfunctions;
     var selectedValue = 0;
     SelectList IssueList = new SelectList(Issues, "IssueId", "IssueId", selectedValue);
-    SelectList MalfunctionList = new SelectList(Malfunctions, "MalfunctionId", "MalfunctionId");
+    //SelectList MalfunctionList = new SelectList(Malfunctions, "MalfunctionId", "MalfunctionId");
 
 }
 <div class="row mr-5">
@@ -19,35 +19,37 @@
                 <option value="wybierz">---Wybierz---</option>
             </select>
         </div>
+        <table>
+        </table>
         @*<div>
-            <div class="col-sm">
-                @Html.DisplayNameForDisplayNameFor(Issues.)
-            </div>
-            <div class="col-sm">
-                @Html.DisplayNameFor(model => model.CharacterRole)
-            </div>
-            <div class="col-sm">
-                @Html.DisplayNameFor(model => model.Trait)
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-secondary" />
-            </div>
-        </div>*@
+                <div class="col-sm">
+                    @Html.DisplayNameForDisplayNameFor(Issues.)
+                </div>
+                <div class="col-sm">
+                    @Html.DisplayNameFor(model => model.CharacterRole)
+                </div>
+                <div class="col-sm">
+                    @Html.DisplayNameFor(model => model.Trait)
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-secondary" />
+                </div>
+            </div>*@
         @*<div class="form-control my-3">
-            <label asp-for="MalfunctionId" class="control-label mx-3"></label>
-            <select asp-items="@(MalfunctionList)"
-                    class="form-control">
-                <option value="wybierz">---Wybierz---</option>
-            </select>
-        </div>*@
+                <label asp-for="MalfunctionId" class="control-label mx-3"></label>
+                <select asp-items="@(MalfunctionList)"
+                        class="form-control">
+                    <option value="wybierz">---Wybierz---</option>
+                </select>
+            </div>*@
         @*@{var Issue = Issues.First(x => x.Id == selectedValue);}
-        <div class="container">
+            <div class="container">
 
-            <div class="form-control">@item.Description</div>
-            //image//
-        </div>*@
+                <div class="form-control">@item.Description</div>
+                //image//
+            </div>*@
     </div>
-
+    
 </div>
 <script>
 
@@ -55,27 +57,37 @@
         var selects = document.getElementById("issueList");
         return selects.options[selects.selectedIndex].value;
     }
-
+    function seePhotos(id)
+    {
+        window.location.href = '@Url.Action("Photos", "Malfunction")/' + id;
+    }
+        function maintain()
+    {
+        window.location.href = '@Url.Action("AddMalfunction", "Malfunction")/' + id;
+    }
     var id = [];
     var lat = [];
     var lon = [];
     var date = [];
     var desc = [];
+    var state = [];
     @foreach (var item in ViewBag.Issues)
     {
         @:id.push("@item.IssueId");
         @:lat.push("@item.Latitude");
         @:lon.push("@item.Longitude");
-        @:date.push("@item.Date");
+        @:date.push("@item.Date.ToString("MM / dd / yyyy H: mm")");
         @:desc.push("@item.Description");
+        @:state.push("@item.State");
     }
     @foreach (var item in ViewBag.Malfunctions)
     {
         @:id.push("@item.Issue[0].IssueId");
         @:lat.push("@item.Issue[0].Latitude");
         @:lon.push("@item.Issue[0].Longitude");
-        @:date.push("@item.Issue[0].Date");
+        @:date.push("@item.Issue[0].Date.ToString(" MM/dd/yyyy H:mm")");
         @:desc.push("@item.Issue[0].Description");
+        @:state.push("@item.Issue[0].State");
     }
     var map = L.map('map').setView([49.821944, 19.044444], 11);
 
@@ -92,10 +104,30 @@
     //    desc
     //];
     for (var i = 0; i < lat.length; i++) {
-        var popup = L.popup().setContent("Zgłoszenie nr " + id[i] + "<br>" + desc[i]);
+        var color = 'orange';
+        if (state[i] == 1)
+        switch (state[i]) {
+            case 1:
+                color = 'green';
+                break;
+            case 2:
+                color = 'gray';
+                break;
+        }
+        var popup = L.popup().setContent(
+            "<table>" +
+            "<tr><th>Zgłoszenie</th></tr>" +
+            "<tr><td>Zgłoszenie nr </td><td><b>" + id[i] + "</b></td></tr>" +
+            "<tr><td>Opis </td><td><b>" + desc[i] + "</b></td></tr>" +
+            "<tr><td>Data zgłoszenia </td><td><b>" + date[i] + "</b></td></tr>" +
+            "</table>"+
+            '<button class="btn-primary btn-popup my-1 mr-5" onclick="seePhotos('+id[i]+')" >Zdjęcia</button>' +
+            '<button class="btn-secondary btn-popup my-1 ml-5">Obsłuż</button>'
+            );
         popups.push(popup);
         L.marker([lat[i], lon[i]]).addTo(map)
             .bindPopup(popup);
+
     }
 
 </script>
