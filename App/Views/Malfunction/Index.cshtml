@@ -95,14 +95,7 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var popups = [];
-    //var markers = [
-    //    id,
-    //    lat,
-    //    lon,
-    //    date,
-    //    desc
-    //];
+    var markers = [];
     for (var i = 0; i < lat.length; i++) {
         var color = 'orange';
         if (state[i] == 1)
@@ -124,8 +117,8 @@
             '<button class="btn-primary btn-popup my-1 mr-5" onclick="seePhotos('+id[i]+')" >Zdjęcia</button>' +
             '<button class="btn-secondary btn-popup my-1 ml-5">Obsłuż</button>'
             );
-        popups.push(popup);
-        L.marker([lat[i], lon[i]]).addTo(map)
+        var marker = L.marker([lat[i], lon[i]], {alt:id[i]})
+        marker.addTo(map)
             .bindPopup(popup);
 
     }

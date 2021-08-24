@@ -53,6 +53,8 @@ namespace App.Controllers
 
                 foreach (var item in issuePhotos.Images)
                 {
+                    //item.MultimediumId;
+
                     //TODO blob to image
                 }
             }
