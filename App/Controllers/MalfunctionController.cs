@@ -37,12 +37,15 @@ namespace App.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult AddMalfunction(IssueModel issue)
+        public IActionResult AddMalfunction(int id)
         {
-            return View();
+            var Issue = _context.Issues
+                .Include(x => x.Malfunction)
+                .First(x => x.IssueId == id);
+            return View(Issue);
         }
         [HttpPost]
-        public IActionResult AddMalfunction(MalfunctionModel malfunction,IssueModel issue)
+        public IActionResult AddMalfunction(MalfunctionModel malfunction)
         {
             return View();
         }

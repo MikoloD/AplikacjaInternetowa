@@ -18,7 +18,7 @@
                     @Html.DisplayNameFor(model => model.First().Description)
                 </th>
                 <th class="col-1">
-                    Pokaż 
+                    Pokaż
                 </th>
             </tr>
         </thead>
@@ -33,7 +33,7 @@
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
                     <td class="col-1">
-                        <button class="btn-secondary btn-popup" onclick="clickMarker()">Obsłuż</button>
+                        <button class="btn-secondary btn-popup" onclick="clickMarker(@item.IssueId)">Podgląd</button>
                     </td>
                 </tr>
             }
@@ -46,11 +46,10 @@
         var selects = document.getElementById("issueList");
         return selects.options[selects.selectedIndex].value;
     }
-    function clickMarker() {
-        $('img[alt="1"]').click()
+    function clickMarker(id) {
+        $('img[alt='+id+']').click()
     }
-        function maintain()
-    {
+    function maintain(id) {
         window.location.href = '@Url.Action("AddMalfunction", "Malfunction")/' + id;
     }
     var id = [];
@@ -103,7 +102,7 @@
                 '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][1] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][1] + ')"></a></div>'+
                 '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][2] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][2] + ')"></a></div>'+
                 '</div></div></div></div>'+
-                '<button class="btn-secondary btn-popup">Obsłuż</button>'
+                '<button class="btn-secondary btn-popup" onclick="maintain('+id[i]+')">Obsłuż</button>'
             );
         var marker = L.marker([lat[i], lon[i]], { alt: id[i] })
         markers.push(marker);
