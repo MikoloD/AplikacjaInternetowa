@@ -11,8 +11,8 @@ namespace App.Models
         [Key]
         [Display(Name = "Awaria nr")]
         public int MalfunctionId { get; set; }
-        //[Display(Name = "Nazwa awarii")]
-        //public string MalfunctionName { get; set; }
+        [Display(Name = "Techniczny opis awarii")]
+        public string MalfunctionDescription { get; set; }
         public virtual List<IssueModel> Issues{ get; set; }
     }
 }
