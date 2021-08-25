@@ -19,13 +19,22 @@ namespace App.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var querry = _context.Issues
+            List<IssueModel> model = _context.Issues
+                .Include(x=>x.Images)
                 .Where(x => x.State == State.Reported)
-                .OrderByDescending(x=>x.Date);
-            ViewBag.Issues = querry;
-            ViewBag.Malfunctions = _context.Malfunctions
-                .Include(x => x.Issues);
-            return View();
+                .ToList();
+            var querry = _context.Malfunctions
+                .Include(x => x.Issues)
+                .ThenInclude(x=>x.Images)
+                .ToList();
+            foreach (var malfunction in querry)
+            {
+                var issue = malfunction.Issues
+                    .First();
+                issue.Description = malfunction.MalfunctionDescription;
+                model.Add(issue);
+            }
+            return View(model);
         }
         [HttpGet]
         public IActionResult AddMalfunction(IssueModel issue)
@@ -35,29 +44,6 @@ namespace App.Controllers
         [HttpPost]
         public IActionResult AddMalfunction(MalfunctionModel malfunction,IssueModel issue)
         {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult Photos(int id)
-        {
-            int check = _context.Issues
-                .Where(x => x.IssueId == id)
-                .Select(x => x.Images)
-                .ToList()
-                .Count();
-            if (check > 0)
-            {
-                IssueModel issuePhotos = _context.Issues
-                .Include(x => x.Images)
-                .First(x => x.IssueId == id);
-
-                foreach (var item in issuePhotos.Images)
-                {
-                    //item.MultimediumId;
-
-                    //TODO blob to image
-                }
-            }
             return View();
         }
     }

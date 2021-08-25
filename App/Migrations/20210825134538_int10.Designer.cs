@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210823095317_init10")]
-    partial class init10
+    [Migration("20210825134538_int10")]
+    partial class int10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,6 +59,9 @@ namespace App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("MalfunctionDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MalfunctionId");
 

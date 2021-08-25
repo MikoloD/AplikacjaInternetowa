@@ -22,6 +22,7 @@ namespace App.Models
         public string Description { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        [Display(Name = "Data")]
         public DateTime Date { get; set; }
         public State State { get; set; }
         public virtual List<Multimedium> Images { get; set; }

@@ -58,6 +58,9 @@ namespace App.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("MalfunctionDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("MalfunctionId");
 
                     b.ToTable("Malfunctions");

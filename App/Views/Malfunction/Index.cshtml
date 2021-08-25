@@ -1,28 +1,44 @@
-﻿@model App.Models.MalfunctionModel
-
+﻿@model List<App.Models.IssueModel>
+@using Microsoft.AspNetCore.Http;
+@*@inject HttpContext httpContext;*@
 @{
     ViewData["Title"] = "Home Page";
-    var Issues = ViewBag.Issues;
-    var Malfunctions = ViewBag.Malfunctions;
-    var selectedValue = 0;
-    SelectList IssueList = new SelectList(Issues, "IssueId", "IssueId", selectedValue);
-    //SelectList MalfunctionList = new SelectList(Malfunctions, "MalfunctionId", "MalfunctionId");
 
 }
 <div class="row mr-5">
     <div class="col-sm" id="map" style="width: 100%;height: calc(100vh - 55px);position: relative;overflow: hidden;">
     </div>
-    <div class="row mx-5">
-        <div class="photo-gallery">
-            <div class="container">
-                <div class="row photos">
-                    <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="assets/img/desk.jpg" data-lightbox="photos"><img class="img-fluid" src="assets/img/desk.jpg"></a></div>
-                    <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="assets/img/building.jpg" data-lightbox="photos"><img class="img-fluid" src="assets/img/building.jpg"></a></div>
-                    <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="assets/img/loft.jpg" data-lightbox="photos"><img class="img-fluid" src="assets/img/loft.jpg"></a></div>
-                </div>
-            </div>
-        </div>
-    </div> 
+    <table class="col-sm table">
+        <thead>
+            <tr>
+                <th class="col-2">
+                    @Html.DisplayNameFor(model => model.First().Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Description)
+                </th>
+                <th class="col-1">
+                    Pokaż 
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="col-2">
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td class="col-1">
+                        <button class="btn-secondary btn-popup" onclick="clickMarker()">Obsłuż</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <script>
 
@@ -30,9 +46,8 @@
         var selects = document.getElementById("issueList");
         return selects.options[selects.selectedIndex].value;
     }
-    function seePhotos(id)
-    {
-        window.location.href = '@Url.Action("Photos", "Malfunction")/' + id;
+    function clickMarker() {
+        $('img[alt="1"]').click()
     }
         function maintain()
     {
@@ -44,53 +59,54 @@
     var date = [];
     var desc = [];
     var state = [];
-    @foreach (var item in ViewBag.Issues)
+    var photo = [];
+    @for (int i = 0; i < Model.Count; i++)
     {
+        var item = Model[i];
         @:id.push("@item.IssueId");
         @:lat.push("@item.Latitude");
         @:lon.push("@item.Longitude");
         @:date.push("@item.Date.ToString("MM / dd / yyyy H: mm")");
         @:desc.push("@item.Description");
         @:state.push("@item.State");
-    }
-    @foreach (var item in ViewBag.Malfunctions)
-    {
-        @:id.push("@item.Issue[0].IssueId");
-        @:lat.push("@item.Issue[0].Latitude");
-        @:lon.push("@item.Issue[0].Longitude");
-        @:date.push("@item.Issue[0].Date.ToString(" MM/dd/yyyy H:mm")");
-        @:desc.push("@item.Issue[0].Description");
-        @:state.push("@item.Issue[0].State");
-    }
-    var map = L.map('map').setView([49.821944, 19.044444], 11);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var markers = [];
-    for (var i = 0; i < lat.length; i++) {
-        var color = 'orange';
-        if (state[i] == 1)
-        switch (state[i]) {
-            case 1:
-                color = 'green';
-                break;
-            case 2:
-                color = 'gray';
-                break;
+        @:var i = ("@i");
+        @if(item.Images.Count > 0) {
+            @for (int j = 0; j < item.Images.Count; j++)
+            {
+                //var response = httpContext.Response;
+                //response.ContentType = "image/jpg";
+                //response.BinaryWrite((byte[])row["OBIEKT"]);
+                @:var j = ("@j");
+                @:photo[i] = [];
+                @:photo[i][j] = ("@item.Images[j].Image");
+            }
         }
-        var popup = L.popup().setContent(
-            "<table>" +
-            "<tr><th>Zgłoszenie</th></tr>" +
-            "<tr><td>Zgłoszenie nr </td><td><b>" + id[i] + "</b></td></tr>" +
-            "<tr><td>Opis </td><td><b>" + desc[i] + "</b></td></tr>" +
-            "<tr><td>Data zgłoszenia </td><td><b>" + date[i] + "</b></td></tr>" +
-            "</table>"+
-            '<button class="btn-primary btn-popup my-1 mr-5" onclick="seePhotos('+id[i]+')" >Zdjęcia</button>' +
-            '<button class="btn-secondary btn-popup my-1 ml-5">Obsłuż</button>'
+    }
+        var map = L.map('map').setView([49.821944, 19.044444], 11);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var markers = [];
+        for (var i = 0; i < id.length; i++) {
+
+            var popup = L.popup().setContent(
+                "<table>" +
+                "<tr><th>Zgłoszenie</th></tr>" +
+                "<tr><td>Zgłoszenie nr </td><td><b>" + id[i] + "</b></td></tr>" +
+                "<tr><td>Opis </td><td><b>" + desc[i] + "</b></td></tr>" +
+                "<tr><td>Data zgłoszenia </td><td><b>" + date[i] + "</b></td></tr>" +
+                "</table>" +
+                '<div class="row mx-5"><div class="photo-gallery"><div class="container"><div class="row photos">'+
+                '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][0] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][0] + ')"></a></div>'+
+                '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][1] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][1] + ')"></a></div>'+
+                '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][2] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][2] + ')"></a></div>'+
+                '</div></div></div></div>'+
+                '<button class="btn-secondary btn-popup">Obsłuż</button>'
             );
-        var marker = L.marker([lat[i], lon[i]], {alt:id[i]})
+        var marker = L.marker([lat[i], lon[i]], { alt: id[i] })
+        markers.push(marker);
         marker.addTo(map)
             .bindPopup(popup);
 
