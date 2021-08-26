@@ -1,3 +1,4 @@
+using App.Controllers;
 using App.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,6 +55,13 @@ namespace App
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            //app.UseMyMiddleware();
+            app.MapWhen(
+                    context => context.Request.Path.ToString().EndsWith(".image"),
+                    appBranch => {
+                            // ... optionally add more middleware to this branch
+                            appBranch.UseMiddleware<MyMiddleware>();
+                    });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

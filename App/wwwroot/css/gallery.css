@@ -39,3 +39,8 @@
 .photo-gallery .item {
     padding-bottom: 30px;
 }
+.photo-size {
+    width: 32px !important;
+    height: 32px !important;
+    border: solid !important;
+}

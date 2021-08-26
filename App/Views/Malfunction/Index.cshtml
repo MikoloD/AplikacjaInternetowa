@@ -1,6 +1,5 @@
 ﻿@model List<App.Models.IssueModel>
 @using Microsoft.AspNetCore.Http;
-@*@inject HttpContext httpContext;*@
 @{
     ViewData["Title"] = "Home Page";
 
@@ -27,7 +26,7 @@
             {
                 <tr>
                     <td class="col-2">
-                        @Html.DisplayFor(modelItem => item.Date)
+                        @Html.DisplayFor(modelitem => item.Date.ToString("MM.dd.yyyy HH:mm"))
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Description)
@@ -52,6 +51,20 @@
     function maintain(id) {
         window.location.href = '@Url.Action("AddMalfunction", "Malfunction")/' + id;
     }
+    function listPhotos(photos) {
+        var result = "";
+        console.log(photos);
+        for (var i = 0; i < photos.length; i++) {
+            console.log(photos[i]);
+            if (photos[i] != undefined) {
+
+                result = result + '<div class="col-sm-6 col-md-4 col-lg-3 item"><div style="padding-left:10px;display: block;min-width: 64px;min-height: 64px;">'+
+                    '<a href = "get.image?img=' + photos[i] + '" data-lightbox="photos" > <img class="" style="width: 100%;height: 100%;border: solid;display: block;" src="get.image?img=' + photos[i] + '"></a></div ></div > '
+            }
+
+        }
+        return result;
+    }
     var id = [];
     var lat = [];
     var lon = [];
@@ -65,21 +78,23 @@
         @:id.push("@item.IssueId");
         @:lat.push("@item.Latitude");
         @:lon.push("@item.Longitude");
-        @:date.push("@item.Date.ToString("MM / dd / yyyy H: mm")");
+        @:date.push("@item.Date.ToString("MM.dd.yyyy HH:mm")");
         @:desc.push("@item.Description");
         @:state.push("@item.State");
         @:var i = ("@i");
         @if(item.Images.Count > 0) {
+            @:photo[i] = [];
             @for (int j = 0; j < item.Images.Count; j++)
             {
-                //var response = httpContext.Response;
-                //response.ContentType = "image/jpg";
-                //response.BinaryWrite((byte[])row["OBIEKT"]);
+                if(item.Images[j].Image != null)
+                    {
                 @:var j = ("@j");
-                @:photo[i] = [];
-                @:photo[i][j] = ("@item.Images[j].Image");
+
+                @:photo[i][j] = ("@item.Images[j].MultimediumId");
+                @:console.log(photo[i][j]);
+                    }
+                }
             }
-        }
     }
         var map = L.map('map').setView([49.821944, 19.044444], 11);
 
@@ -88,8 +103,14 @@
         }).addTo(map);
 
         var markers = [];
-        for (var i = 0; i < id.length; i++) {
-
+    for (var i = 0; i < id.length; i++) {
+            var lista = ""
+        if (photo[id[i] - 1] != undefined)
+        {
+            console.log(photo[id[i] - 1]);
+            lista = listPhotos(photo[id[i] - 1]);
+            lista.replace("undefined","");
+        }
             var popup = L.popup().setContent(
                 "<table>" +
                 "<tr><th>Zgłoszenie</th></tr>" +
@@ -97,10 +118,9 @@
                 "<tr><td>Opis </td><td><b>" + desc[i] + "</b></td></tr>" +
                 "<tr><td>Data zgłoszenia </td><td><b>" + date[i] + "</b></td></tr>" +
                 "</table>" +
-                '<div class="row mx-5"><div class="photo-gallery"><div class="container"><div class="row photos">'+
-                '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][0] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][0] + ')"></a></div>'+
-                '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][1] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][1] + ')"></a></div>'+
-                '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="' + photo[i][2] + '})" data-lightbox="photos"><img class="img-fluid" src="' + photo[i][2] + ')"></a></div>'+
+                '<div class="row"><div class="photo-gallery"><div class="container"><div class="row photos">' +
+                lista
+                +
                 '</div></div></div></div>'+
                 '<button class="btn-secondary btn-popup" onclick="maintain('+id[i]+')">Obsłuż</button>'
             );
