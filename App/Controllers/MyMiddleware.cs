@@ -13,7 +13,7 @@ namespace App.Controllers
         private readonly RequestDelegate _next;
         public MyMiddleware(RequestDelegate next)
         {
-            next = next;
+            _next = next;
         }
 
         public async Task Invoke(HttpContext context, ApplicationDbContext dbContext)
@@ -26,11 +26,6 @@ namespace App.Controllers
             await context.Response.Body.WriteAsync(response);
 
             // Clean up.
-        }
-        private string GenerateResponse(HttpContext context)
-        {
-            string title = context.Request.Query["img"];
-            return string.Format("Title of the report: {0}", title);
         }
         private byte[] GenerateResponseBinary(HttpContext context)
         {

@@ -42,12 +42,23 @@ namespace App.Controllers
             var Issue = _context.Issues
                 .Include(x => x.Malfunction)
                 .First(x => x.IssueId == id);
-            return View(Issue);
+            ViewBag.Issue = Issue;
+            return View();
         }
         [HttpPost]
         public IActionResult AddMalfunction(MalfunctionModel malfunction)
         {
-            return View();
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public IActionResult AddMalfunction(MalfunctionModel malfunction,IssueModel issue)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public IActionResult ArchiveMalfunction(MalfunctionModel malfunction)
+        {
+            return RedirectToAction(nameof(Index));
         }
     }
 }
