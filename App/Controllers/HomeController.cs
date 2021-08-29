@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Controllers
 {
@@ -23,7 +24,11 @@ namespace App.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Malfunctions.ToList());
+            var Malfunctions = _context.Malfunctions
+                .Include(x => x.Issues)
+                .Where(x=>x.Issues.First().State == State.InProgress)
+                .ToList();
+            return View(Malfunctions);
         }
         public IActionResult Information()
         {

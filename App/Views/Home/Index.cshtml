@@ -13,7 +13,7 @@
     {
         @:lat.push("@item.Issues.First().Latitude");
         @:lon.push("@item.Issues.First().Longitude");
-        @:desc.push("@item.Issues.First().Description");
+        @:desc.push("@item.MalfunctionDescription");
     }
 
     var map = L.map('map').setView([49.821944, 19.044444], 11);
