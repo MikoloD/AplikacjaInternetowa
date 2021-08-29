@@ -53,7 +53,6 @@
     }
     function listPhotos(photos) {
         var result = "";
-        console.log(photos);
         for (var i = 0; i < photos.length; i++) {
             console.log(photos[i]);
             if (photos[i] != undefined) {
@@ -80,7 +79,7 @@
         @:lon.push("@item.Longitude");
         @:date.push("@item.Date.ToString("MM.dd.yyyy H:mm")");
         @:desc.push("@item.Description");
-        @:state.push("@item.State");
+        @:state.push("@((int)item.State)");
         @:var i = ("@i");
         @if(item.Images.Count > 0) {
             @:photo[i] = [];
@@ -102,14 +101,29 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var markers = [];
+    var markers = [];
+
+    
+
     for (var i = 0; i < id.length; i++) {
-            var lista = ""
+        var lista = ""
         if (photo[id[i] - 1] != undefined)
         {
-            console.log(photo[id[i] - 1]);
             lista = listPhotos(photo[id[i] - 1]);
             lista.replace("undefined","");
+        }
+        console.log(state[i])
+        var Icon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+        if (state[i] == 1)
+        {
+            Icon.iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png';
         }
             var popup = L.popup().setContent(
                 "<table>" +
@@ -125,7 +139,7 @@
                 '<div class="text-center">'+
                 '<button class="btn-secondary btn-popup center-block" onclick="maintain('+id[i]+')">Obsłuż</button></div>'
             );
-        var marker = L.marker([lat[i], lon[i]], { alt: id[i] })
+        var marker = L.marker([lat[i], lon[i]],{ icon: Icon, alt: id[i] })
         markers.push(marker);
         marker.addTo(map)
             .bindPopup(popup);

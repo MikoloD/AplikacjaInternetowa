@@ -74,14 +74,22 @@ namespace App.Controllers
         public IActionResult ChangeMalfunctionState(int id)
         {
             var issue = _context.Issues.First(x => x.IssueId == id);
-            var malfunctionId = _context.Malfunctions
-                .Include(x => x.Issues)
-                .First(x => x.Issues.First(x => x.IssueId == id) == issue).MalfunctionId;
-            var Issues = _context.Issues.Where(x => x.MalfunctionId == malfunctionId);
-            foreach (var item in Issues)
+            if (issue.MalfunctionId == null)
             {
-                item.State = State.Finished;
-                _context.Issues.Update(item);
+                issue.State = State.Finished;
+            }
+            else
+            {
+                var malfunctionId = _context.Malfunctions
+                    .Include(x => x.Issues)
+                    .First(x => x.Issues.First(x => x.IssueId == id) == issue).MalfunctionId;
+                var Issues = _context.Issues.Where(x => x.MalfunctionId == malfunctionId);
+                foreach (var item in Issues)
+                {
+                    item.State = State.Finished;
+                    _context.Issues.Update(item);
+                }
+
             }
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
