@@ -16,23 +16,36 @@
     <div class="col-sm">
         <div class="row">
             <table class="table">
+                @{ var issue = ViewBag.Issue;
+                    string date = issue.Date.ToString("MM.dd.yyyy H:mm");
+                    string state = "";
+                }
+                <thead>
+                    <tr>
+                        <th class="col-2">
+                            Data
+                        </th>
+                        <th>
+                            Opis
+                        </th>
+                        <th class="col-2">
+                            Stan
+                        </th>
+                    </tr>
+                </thead>
                 <tbody>
-                    @{
-                        var issue = ViewBag.Issue;
-                        string date = issue.Date.ToString("MM.dd.yyyy H:mm");
-                        string state = "";
-                        switch (issue.State)
-                        {
-                            case State.Reported:
-                                state = "<span class='statusRed'>Zgłoszone</span>";
-                                break;
-                            case State.InProgress:
-                                state = "<span class='statusGreen'>W realizacji</span>";
-                                break;
-                            case State.Finished:
-                                state = "<span class='statusGray'>Zakończone</span>";
-                                break;
-                        }
+
+                    @switch (issue.State)
+                    {
+                        case State.Reported:
+                            state = "<span class='statusRed'>Zgłoszone</span>";
+                            break;
+                        case State.InProgress:
+                            state = "<span class='statusGreen'>W realizacji</span>";
+                            break;
+                        case State.Finished:
+                            state = "<span class='statusGray'>Zakończone</span>";
+                            break;
                     }
                     <tr>
                         <td class="col-2">
@@ -41,14 +54,10 @@
                         <td>
                             @Html.Raw(issue.Description)
                         </td>
-                        <th class="col-2">
+                        <td class="col-2">
                             @Html.Raw(state)
-                        </th>
-                        <td class="col-1">
-                            <button class="btn-primary" onclick="clickMarker(@issue.IssueId)">Podgląd</button>
                         </td>
                     </tr>
-                    }
                 </tbody>
             </table>
         </div>
@@ -70,7 +79,7 @@
             <div class="col-sm text-center">
                 <h3>Dołącz zgłoszenie do awarii</h3>
                 <form asp-action="AddIssueToMalfunction">
-                    <div class="form-inline my-3">
+                    <div class="form-group my-3">
                         <label asp-for="MalfunctionDescription" class="control-label mr-5 ml-2 my-3"></label>
                         <select asp-items="@(List)"
                                 class="form-control" asp-for="MalfunctionId">

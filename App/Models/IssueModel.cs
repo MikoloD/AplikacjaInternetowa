@@ -24,6 +24,7 @@ namespace App.Models
         public double Longitude { get; set; }
         [Display(Name = "Data")]
         public DateTime Date { get; set; }
+        [Display(Name = "Stan")]
         public State State { get; set; }
         public virtual List<Multimedium> Images { get; set; }
         public virtual MalfunctionModel Malfunction { get; set; }
