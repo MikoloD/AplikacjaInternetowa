@@ -1,4 +1,5 @@
 ﻿using App.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,6 +28,7 @@ namespace App.Data
                 .HasMany(x => x.Issues)
                 .WithOne(x => x.Malfunction)
                 .HasForeignKey(x => x.MalfunctionId);
+            builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "Admin", NormalizedName = "Admin".ToUpper() });
         }
     }
 }

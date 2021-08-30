@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.OrderBy(x=>x.State).ThenByDescending(x=>x.Date))
                 {
                     string date = item.Date.ToString("MM.dd.yyyy H:mm");
                     string state = "";
@@ -132,7 +132,6 @@
                 if(item.Images[j].Image != null)
                     {
                 @:var j = ("@j");
-
                 @:photo[i][j] = ("@item.Images[j].MultimediumId");
                     }
                 }
@@ -157,9 +156,10 @@
     });
     for (var i = 0; i < id.length; i++) {
         var lista = "";
-        if (photo[id[i] - 1] != undefined)
+        if (photo[i] != undefined)
         {
-            lista = listPhotos(photo[id[i] - 1]);
+            lista = listPhotos(photo[i]);
+            
             lista.replace("undefined","");
         }
         console.log(lista);

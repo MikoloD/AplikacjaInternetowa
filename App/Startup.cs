@@ -36,14 +36,17 @@ namespace App
                 options.UseSqlServer(
                     Configuration.GetConnectionString("Connection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<IdentityUser> userManager)
         {
+            ApplicationDbInitializer.SeedUsers(userManager);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
