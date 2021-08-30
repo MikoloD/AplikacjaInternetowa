@@ -28,6 +28,11 @@ namespace App.Controllers
                 .Include(x => x.Issues)
                 .Where(x=>x.Issues.First().State == State.InProgress)
                 .ToList();
+            foreach(var item in Malfunctions)
+            {
+                //if (item.MalfunctionDescription.Length > 50)
+                //    item.MalfunctionDescription = item.MalfunctionDescription.Substring(0, 50);
+            }
             return View(Malfunctions);
         }
         public IActionResult Information()

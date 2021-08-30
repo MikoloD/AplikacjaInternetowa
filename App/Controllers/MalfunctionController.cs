@@ -44,6 +44,7 @@ namespace App.Controllers
                 issue.Description = malfunction.MalfunctionDescription;
                 model.Add(issue);
             }
+            model.OrderByDescending(x => x.Date);
             return View(model);
         }
         [HttpGet]
