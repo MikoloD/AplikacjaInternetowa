@@ -51,6 +51,8 @@ namespace App.Controllers
         public IActionResult AddMalfunction(int id)
         {   
             ViewBag.Id = id;
+            var issue = _context.Issues.First(x => x.IssueId == id);
+            ViewBag.Issue = issue;
             ViewBag.Malfunctions = _context.Malfunctions
                 .Include(x=>x.Issues)
                 .Where(x=>x.Issues.First().State==State.InProgress)
