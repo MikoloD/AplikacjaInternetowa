@@ -79,3 +79,15 @@ body {
     width: 65px;
     height: 40px;
 }
+.statusRed {
+    color: red !important;
+    border: 1px solid red;
+    border-radius: 4px;
+    padding: 5px;
+}
+.statusGreen {
+    color: green;
+    border: 1px solid green;
+    border-radius: 4px;
+    padding: 5px;
+}

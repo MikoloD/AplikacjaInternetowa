@@ -7,44 +7,78 @@
 <div class="row mr-5">
     <div class="col-sm" id="map" style="width: 100%;height: calc(100vh - 55px);position: relative;overflow: hidden;">
     </div>
-    <table class="col-sm table">
-        <thead>
-            <tr>
-                <th class="col-2">
-                    @Html.DisplayNameFor(model => model.First().Date)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Description)
-                </th>
-                <th class="col-1">
-                    Stan
-                </th>
-                <th class="col-1">
-                    Pokaż
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                string date = item.Date.ToString("MM.dd.yyyy H:mm");
+    <div class="col-sm">
+        <div class="row">
+            <div class="col-sm">
+                <label for="reported">Zgłoszone</label>
+                <input id="reported" type="checkbox" checked="" />
+            </div>
+            <div class="col-sm">
+                <label for="inProgress">W realizacji</label>
+                <input id="inProgress" type="checkbox" checked="" />
+            </div>
+            <div class="col-sm">
+                <label for="archive">Zakończone</label>
+                <input id="archive" type="checkbox"/>
+            </div>
+            <div class="col-sm">
+                <button class="btn-primary">Zakończone</button>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td class="col-2">
-                        @Html.Raw(date);
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <th class="col-1">
-                        @Html.DisplayFor(modelItem => item.State)
+                    <th class="col-2">
+                        @Html.DisplayNameFor(model => model.First().Date)
                     </th>
-                    <td class="col-1">
-                        <button class="btn-secondary" onclick="clickMarker(@item.IssueId)">Podgląd</button>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().Description)
+                    </th>
+                    <th class="col-2">
+                        Stan
+                    </th>
+                    <th class="col-1">
+                        Pokaż
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    string date = item.Date.ToString("MM.dd.yyyy H:mm");
+                    string state = "";
+                    switch (item.State)
+                    {
+                        case State.Reported:
+                            state = "<span class='statusRed'>Zgłoszone</span>";
+                            break;
+                        case State.InProgress:
+                            state = "<span class='statusGreen'>W realizacji</span>";
+                            break;
+                        case State.Finished:
+                            state = "<span class='statusGray'>Zakończone</span>";
+                            break;
+                    }
+
+                    <tr>
+                        <td class="col-2">
+                            @Html.Raw(date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <th class="col-2">
+                            @Html.Raw(state)
+                        </th>
+                        <td class="col-1">
+                            <button class="btn-primary" onclick="clickMarker(@item.IssueId)">Podgląd</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 </div>
 <script>
 
@@ -162,7 +196,7 @@
                 +
                 '</div></div></div></div>' +
                 '<div class="text-center">'+
-                '<button class="btn-secondary btn-popup center-block" onclick="maintain('+id[i]+')">Obsłuż</button></div>'
+                '<button class="btn-primary btn-popup center-block" onclick="maintain('+id[i]+')">Obsłuż</button></div>'
             );
         var marker = L.marker([lat[i], lon[i]], { icon: myIcon, alt: id[i] })
         markers.push(marker);
