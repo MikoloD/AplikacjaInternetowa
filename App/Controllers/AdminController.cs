@@ -35,12 +35,12 @@ namespace App.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Index(string Id, string newPassword)
+        public async Task<IActionResult> Index(string Id, string newPassword)
         {
-            await Task<IdentityUser> User = _userManager.FindByIdAsync(Id);
-            string hashedNewPassword = _userManager.PasswordHasher.HashPassword(user,newPassword);
-            user.PasswordHash = hashedNewPassword;
-            _context.Users.Update(user);
+            Task<IdentityUser> User = _userManager.FindByIdAsync(Id);
+            string hashedNewPassword = _userManager.PasswordHasher.HashPassword(await User,newPassword);
+
+            _context.Users.Update(await User);
             return View();
         }
     }
