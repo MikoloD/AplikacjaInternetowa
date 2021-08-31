@@ -1,0 +1,23 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+@{
+    SelectList List = new SelectList(ViewBag.Users, "Id", "UserName");
+    string newPassword = "";
+}
+<div class="col-sm text-center">
+    <h3>Dołącz zgłoszenie do awarii</h3>
+    <form asp-action="AddIssueToMalfunction">
+        <div class="form-group my-3">
+            <label asp-for="UserName" class="control-label mr-5 ml-2 my-3"></label>
+            <select asp-items="@(List)"
+                    class="form-control" asp-for="Id">
+                <option value="wybierz">---Wybierz---</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input id="newPassword" type="text"  class="form-control" />
+        </div>
+        <div class="form-group align-items-center">
+            <input type="submit" value="Dodaj" class="btn btn-primary" asp-action="Index"asp-route-Id="@Model.Id" asp-route-newPassword="@newPassword" />
+        </div>
+    </form>
+</div>

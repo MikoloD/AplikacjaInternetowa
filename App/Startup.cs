@@ -41,6 +41,8 @@ namespace App
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddTransient<SignInManager<IdentityUser>>();
+            services.AddScoped<UserManager<IdentityUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

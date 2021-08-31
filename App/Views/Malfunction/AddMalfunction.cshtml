@@ -12,94 +12,94 @@
     }
     SelectList List = new SelectList(ListModel, "MalfunctionId", "MalfunctionDescription");
 }
-<div class="container justify-content-center">
-    <div class="col-sm">
-        <div class="row">
-            <table class="table">
-                @{ var issue = ViewBag.Issue;
-                    string date = issue.Date.ToString("MM.dd.yyyy H:mm");
-                    string state = "";
-                }
-                <thead>
-                    <tr>
-                        <th class="col-2">
-                            Data
-                        </th>
-                        <th>
-                            Opis
-                        </th>
-                        <th class="col-2">
-                            Stan
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @switch (issue.State)
-                    {
-                        case State.Reported:
-                            state = "<span class='statusRed'>Zgłoszone</span>";
-                            break;
-                        case State.InProgress:
-                            state = "<span class='statusGreen'>W realizacji</span>";
-                            break;
-                        case State.Finished:
-                            state = "<span class='statusGray'>Zakończone</span>";
-                            break;
+    <div class="container justify-content-center">
+        <div class="col-sm">
+            <div class="row">
+                <table class="table">
+                    @{ var issue = ViewBag.Issue;
+                        string date = issue.Date.ToString("MM.dd.yyyy H:mm");
+                        string state = "";
                     }
-                    <tr>
-                        <td class="col-2">
-                            @Html.Raw(date)
-                        </td>
-                        <td>
-                            @Html.Raw(issue.Description)
-                        </td>
-                        <td class="col-2">
-                            @Html.Raw(state)
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="row">
-            <div class="col-sm text-center">
-                <h3>Zarejestruj awarię</h3>
-                <form asp-action="Add" class="justify-content-center">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="MalfunctionDescription" class="control-label"></label>
-                        <textarea id="desc" asp-for="MalfunctionDescription" class="form-control"></textarea>
-                        <span asp-validation-for="MalfunctionDescription" class="text-danger"></span>
-                    </div>
-                    <div class="form-group my-3 text-center">
-                        <input type="submit" value="Zgłoś" class="btn btn-primary" asp-controller="Malfunction" asp-action="AddMalfunction" asp-route-id="@id" />
-                    </div>
-                </form>
+                    <thead>
+                        <tr>
+                            <th class="col-2">
+                                Data
+                            </th>
+                            <th>
+                                Opis
+                            </th>
+                            <th class="col-2">
+                                Stan
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @switch (issue.State)
+                        {
+                            case State.Reported:
+                                state = "<span class='statusRed'>Zgłoszone</span>";
+                                break;
+                            case State.InProgress:
+                                state = "<span class='statusGreen'>W realizacji</span>";
+                                break;
+                            case State.Finished:
+                                state = "<span class='statusGray'>Zakończone</span>";
+                                break;
+                        }
+                        <tr>
+                            <td class="col-2">
+                                @Html.Raw(date)
+                            </td>
+                            <td>
+                                @Html.Raw(issue.Description)
+                            </td>
+                            <td class="col-2">
+                                @Html.Raw(state)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-sm text-center">
-                <h3>Dołącz zgłoszenie do awarii</h3>
-                <form asp-action="AddIssueToMalfunction">
-                    <div class="form-group my-3">
-                        <label asp-for="MalfunctionDescription" class="control-label mr-5 ml-2 my-3"></label>
-                        <select asp-items="@(List)"
-                                class="form-control" asp-for="MalfunctionId">
-                            <option value="wybierz">---Wybierz---</option>
-                        </select>
-                    </div>
-                    <div class="form-group align-items-center">
-                        <input type="submit" value="Dodaj" class="btn btn-primary" asp-controller="Malfunction" asp-action="AddIssueToMalfunction" asp-route-id="@id" />
-                    </div>
-                </form>
-            </div>
-            <div class="col-sm text-center">
-                <h3>Archiwizacja</h3>
-                <button class="btn btn-primary" onclick="archive(@id)">Archiwizuj</button>
+            <div class="row">
+                <div class="col-sm text-center">
+                    <h3>Zarejestruj awarię</h3>
+                    <form asp-action="Add" class="justify-content-center">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="MalfunctionDescription" class="control-label"></label>
+                            <textarea id="desc" asp-for="MalfunctionDescription" class="form-control"></textarea>
+                            <span asp-validation-for="MalfunctionDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group my-3 text-center">
+                            <input type="submit" value="Zgłoś" class="btn btn-primary" asp-controller="Malfunction" asp-action="AddMalfunction" asp-route-id="@id" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm text-center">
+                    <h3>Dołącz zgłoszenie do awarii</h3>
+                    <form asp-action="AddIssueToMalfunction">
+                        <div class="form-group my-3">
+                            <label asp-for="MalfunctionDescription" class="control-label mr-5 ml-2 my-3"></label>
+                            <select asp-items="@(List)"
+                                    class="form-control" asp-for="MalfunctionId">
+                                <option value="wybierz">---Wybierz---</option>
+                            </select>
+                        </div>
+                        <div class="form-group align-items-center">
+                            <input type="submit" value="Dodaj" class="btn btn-primary" asp-controller="Malfunction" asp-action="AddIssueToMalfunction" asp-route-id="@id" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm text-center">
+                    <h3>Archiwizacja</h3>
+                    <button class="btn btn-primary" onclick="archive(@id)">Archiwizuj</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
+    <script>
     function archive(id) {
         window.location.href = '@Url.Action("ChangeMalfunctionState", "Malfunction")/' + id;
     }
-</script>
+    </script>
