@@ -19,10 +19,11 @@ namespace App.Controllers
         {
             _context = context;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
         public bool UrlProtection()
         {
-            if (_signInManager.IsSignedIn(User))
+            if (User.IsInRole("Admin"))
             {
                 return true;
             }
@@ -30,18 +31,27 @@ namespace App.Controllers
         }
         public IActionResult Index()
         {
-            var users = _context.Users.ToList();
-            ViewBag.Users = users;
-            return View();
+            if (UrlProtection())
+            {
+                var users = _context.Users.ToList();
+                ViewBag.Users = users;
+                ViewBag.NewPassword = "";
+                return View();
+            }
+            else
+            {
+                return Redirect("/Identity/Account/Login");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Index(string Id, string newPassword)
         {
-            Task<IdentityUser> User = _userManager.FindByIdAsync(Id);
-            string hashedNewPassword = _userManager.PasswordHasher.HashPassword(await User,newPassword);
-
-            _context.Users.Update(await User);
-            return View();
+            IdentityUser User =  await _userManager.FindByIdAsync(Id);
+            string hashedNewPassword = _userManager.PasswordHasher.HashPassword(User, newPassword);
+            User.PasswordHash = hashedNewPassword;
+            _context.Update(User);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

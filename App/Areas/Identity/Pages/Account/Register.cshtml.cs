@@ -37,7 +37,7 @@ namespace App.Areas.Identity.Pages.Account
         }
         public bool UrlProtection()
         {
-            if (_signInManager.IsSignedIn(User))
+            if (User.IsInRole("Admin"))
             {
                 return true;
             }
